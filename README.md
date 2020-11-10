@@ -2,6 +2,8 @@
 
 <h2 align="center">About me</h2>
 
+<p align="left">    I'm Interested in many different fields in software engineering. I have worked on smart contracts, machine learning, mobile, and fullstack applications. I'm especially interested in distributed infasrtuctures like IPFS and blockchain as well as Artificial Consiousness. <p>
+
 
 <h2 align="center">You can reach me at :alien:</h2>
 
