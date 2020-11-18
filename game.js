@@ -1,247 +1,222 @@
-var c = document.getElementById("game");
-var ctx = c.getContext("2d");
-var ball;
-var bx = 300;
-var by = 300;
-var y1 = 300;
-var y2 = 300;
-var speed = 50;
-var bspdy = Math.floor((Math.random() * 8) - 4);
-var bspdx = Math.floor((Math.random() * 8) - 4);
-var win = false;
-var lose = false;
-var pause = false;
-
-function setup(){
-    ball = new Ball();
-    puck1 = new Puck(0,"a","z",2);
-    puck2 = new Puck(580,"p","l",1);
-    nn = new neuraln();
-    document.addEventListener('keydown',function(event){
-        if(event.keyCode == 32 && pause == true){
-            win = false;
-            lose = false;
-            pause = false;
-            bx = 300;
-            by = 300;
-            y1 = 300;
-            y2 = 300;
-            speed = 50;
-            bspdy = Math.floor((Math.random() * 4) + 1);
-            bspdx = Math.floor((Math.random() * 4) + 3);
-            ball = new Ball();
-            puck1 = new Puck(0,"a","z",2);
-            puck2 = new Puck(580,"p","l",1);
-
-        }
-        else if (event.keyCode == 81){
-            if (y2-50 >= 0){
-                y2= y2 - 50;
-            }
-
-
-
-        }
-        else if (event.keyCode == 65){
-            if (y2+50 <= 500){
-                y2= y2 + 50;
-            }
-
-
-        }
-        else{
-
-        }
+function main(width, height) {
+    var canvas = document.getElementById('canvas')
+    var ctx = canvas.getContext("2d");
+    canvas.setAttribute('width', width)
+    canvas.setAttribute('height', height)
+    board = new Board(height, width, false, false)
+    document.addEventListener('keydown', function(event) {
+        board.updateKeyPress(event.keyCode)
     });
-}
-function sigmoid(t) {
-    return 1/(1+Math.pow(Math.E, -t));
-}
-
-class Puck{
-    constructor(x,key1,key2,num){
-        this.x = x;
-        this.key1 = key1;
-        this.key2 = key2;
-        this.width = 20;
-        this.height = 100;
-        this.num = num;
+    setInterval(function() {
+        mainGameLoop(ctx, board, width, height)
+    }, 20);
 }
 
-
-    draw(){
-        if (this.num==1){
-            ctx.fillStyle = "#FF0000";
-            ctx.fillRect(this.x,y1,this.width,this.height);}
-else {
-    ctx.fillStyle = "#FF0000";
-    ctx.fillRect(this.x,y2,this.width,this.height);
+function mainGameLoop(ctx, board, width, height, pop) {
+    board.updateBall()
+    board.updatePucks()
+    board.draw(ctx)
 }
-
+class Puck {
+    constructor(width, height, upKey, downKey, x, y, movSpd) {
+        this.width = width
+        this.height = height
+        this.upKey = upKey
+        this.downKey = downKey
+        this.x = x
+        this.y = y
+        this.movSpd = movSpd
     }
-}
-
-class Ball{
-    constructor(){
-        this.x = 50;
-        this.y = 50;
-        this.size = 50;
-
-    }
-    updatexpos(){
-        if (pause == true){
-            bx = 300;
-            by = 300;
-        }
-        if (by > y1-50 && by < y1+50){
-            if (bx + bspdx > 555){
-                bspdx = -bspdx*1.25;
-            }
-        }
-        if (by > y2-50 && by < y2+50){
-            if (bx + bspdx < 20){
-
-                bspdx = -bspdx*1.25;
-            }
-        }
-        if (bx + bspdx > 0 && bx + bspdx < 575){
-                bx = bx + bspdx;
-        }
-        else{
-            if(bx + bspdx <= 0){
-                pause = true;
-                lose = true;
-
-            }
-            else if(bx + bspdx >= 575){
-                pause = true;
-                win = true;
-
-            }
-        }
-        if (by + bspdy > 0 && by + bspdy < 560){
-                by = by + bspdy;
-        }
-        else{
-            bspdy = -bspdy;
-        }
-
-    }
-    draw(){
-        ctx.fillStyle = "#FF0000";
-        ctx.fillRect(bx, by, this.size, this.size);
-    }
-}
-class neuraln {
-    constructor(){
-
-        this.w1 = Math.random()*2 - 1;
-        this.w2 = Math.random()*2 - 1;
-        this.w3 = Math.random()*2 - 1;
-        this.w4 = Math.random()*2 - 1;
-        this.w5 = Math.random()*2 - 1;
-        this.w6 = Math.random()*2 - 1;
-        this.w7 = Math.random()*2 - 1;
-        this.w8 = Math.random()*2 - 1;
-        this.w9 = Math.random()*2 - 1;
-        this.w0 = Math.random()*2 - 1;
-        this.b1 = Math.random()*2 - 1;
-        this.b2 = Math.random()*2 - 1;
-        this.b3 = Math.random()*2 - 1;
-        this.b4 = Math.random()*2 - 1;
-        this.b5 = Math.random()*2 - 1;
-        this.b6 = Math.random()*2 - 1;
-        this.b7 = Math.random()*2 - 1;
-        this.b8 = Math.random()*2 - 1;
-        this.b9 = Math.random()*2 - 1;
-        this.b0 = Math.random()*2 - 1;
-        this.b11 = Math.random()*2 - 1;
-        this.b12 = Math.random()*2 - 1;
-        this.b13 = Math.random()*2 - 1;
-        this.b14 = Math.random()*2 - 1;
-        this.b15 = Math.random()*2 - 1;
-        this.c1 = Math.random()*2 - 1;
-        this.c2 = Math.random()*2 - 1;
-        this.c3 = Math.random()*2 - 1;
-        this.c4 = Math.random()*2 - 1;
-        this.c5 = Math.random()*2 - 1;
-        this.c6 = Math.random()*2 - 1;
-
-
-    }
-    updinputs(bx, by, bspdx, bspdy, y2){
-        this.bx = bx-300;
-        this.by = by-300;
-        this.bspdx = bspdx;
-        this.bspdy = bspdy;
-        this.y2 = y2-300;
-
-
-    }
-    network(){
-    this.node1 = sigmoid(this.bx)*this.w1;
-    this.node2 = sigmoid(this.by)*this.w2;
-    this.node3 = sigmoid(this.bspdx)*this.w3;
-    this.node4 = sigmoid(this.bspdy)*this.w4;
-    this.node5 = sigmoid(this.y2)*this.w5;
-    this.node6 = sigmoid(this.node1 * this.b1 + this.node2 + this.b2 + this.node3 * this.b3 + this.node4 * this.b4 + this.node5 * this.b5);
-    this.node7 = sigmoid(this.node1 * this.b6 + this.node2 + this.b7 + this.node3 * this.b8 + this.node4 * this.b9 + this.node5 * this.b0);
-    this.node8 = sigmoid(this.node1 * this.b11 + this.node2 + this.b12 + this.node3 * this.b13 + this.node4 * this.b14 + this.node5 * this.b15);
-    this.node9 = sigmoid(this.node6 * this.c1 + this.node7 + this.c2 + this.node8 * this.c3);
-    this.node10 = sigmoid(this.node6 * this.c4 + this.node7 + this.c5 + this.node8 * this.c6);
-    }
-    move(){
-
-            if(this.node9 > 0.90){
-                if(y1-50 >= 0){
-                    y1= y1 - 50;
-                }
-
-            }
-            else if (this.node10 > 0.90) {
-                if (y1+50 <= 500){
-                    y1= y1 + 50;
-                }
-
-
-            }
-
-
-    }
-
-
-}
-
-function draw(){
-    if(pause == false){
-         ctx.clearRect(0, 0, 600, 600);
+    draw(ctx) {
         ctx.fillStyle = "#000000";
-        ctx.fillRect(0, 0, 600, 600);
-             ball.updatexpos();
-             nn.updinputs(bx,by,bspdx,bspdy,y1);
-             nn.network();
-            nn.move();
-
-        ball.draw();
-        puck1.draw();
-        puck2.draw();}
-    else if (pause == true && win == true){
-        ctx.clearRect(0, 0, 600, 600);
-       ctx.fillStyle = "#000000";
-       ctx.fillRect(0, 0, 600, 600);
-       ball.updatexpos();
-
+        ctx.fillRect(this.x, this.y, this.width, this.height);
     }
-    else{
-        ctx.clearRect(0, 0, 600, 600);
-       ctx.fillStyle = "#FF0000";
-       ctx.fillRect(0, 0, 600, 600);
-       ball.updatexpos();
-
+    updatePos(key, barriers) {
+        if (key == this.upKey) {
+            if (this.y - this.movSpd >= barriers[0].y + barriers[0].height) {
+                this.y = this.y - this.movSpd;
+            }
+        } else if (key == this.downKey) {
+            if (this.y + this.height + this.movSpd <= barriers[1].y) {
+                this.y = this.y + this.movSpd;
+            }
+        }
     }
-
-
-
 }
-setup();
-var intervalID = window.setInterval(draw, 50);
+class AiPuck {
+    constructor(width, height, player, x, y, movSpd) {
+        this.score = 0
+        this.width = width
+        this.height = height
+        this.player = player
+        this.x = x
+        this.y = y
+        this.movSpd = movSpd
+    }
+    draw(ctx) {
+        ctx.fillStyle = "#000000";
+        ctx.fillRect(this.x, this.y, this.width, this.height);
+    }
+    updatePos(ballpos, barriers) {
+        var outputs = this.player.think([Math.abs(this.x - ballpos[0]) / 1000, ballpos[1] / 1000, (this.y + 50) / 1000]);
+        if (outputs[0] >= outputs[1] && outputs[0] >= outputs[2]) {
+            if (this.y - this.movSpd >= barriers[0].y + barriers[0].height) {
+                this.y = this.y - this.movSpd;
+            }
+        }
+        if (outputs[0] < outputs[1] && outputs[1] >= outputs[2]) {
+            if (this.y + this.height + this.movSpd <= barriers[1].y) {
+                this.y = this.y + this.movSpd;
+            }
+        }
+    }
+}
+class Barrier {
+    constructor(x, y, width, height) {
+        this.width = width
+        this.height = height
+        this.x = x
+        this.y = y
+    }
+    draw(ctx) {
+        ctx.fillStyle = "#000000";
+        ctx.fillRect(this.x, this.y, this.width, this.height);
+    }
+}
+class Board {
+    constructor(height, width, player1, player2) {
+        this.height = height
+        this.width = width
+        this.barrier1 = new Barrier(0, 0, this.width, (this.height / 100) * 3)
+        this.barrier2 = new Barrier(0, (this.height / 100) * 97, this.width, (this.height / 100) * 3)
+        this.puck1 = new Puck(width / 50, height / 10, 79, 76, (width / 50) * 49, (height / 20) * 9, 60)
+        this.puck2 = new Puck(width / 50, height / 10, 81, 65, 0, (height / 20) * 9, 60)
+        this.ball = new Ball(height, width)
+        this.barriers = [this.barrier1, this.barrier2]
+        this.drawnItems = [this.puck1, this.puck2, this.ball, this.barrier1, this.barrier2]
+        this.winstate = null
+    }
+    draw(ctx) {
+        ctx.clearRect(0, 0, this.height, this.width);
+        ctx.fillStyle = "#FFFFFF";
+        ctx.fillRect(0, 0, this.width, this.height);
+        if (this.winstate == null) {
+            ctx.fillStyle = "#000000";
+            for (var i = 0; i < this.drawnItems.length; i++) {
+                this.drawnItems[i].draw(ctx)
+            }
+        } else {
+            this.restart()
+            ctx.fillStyle = this.winstate
+            ctx.fillRect(0, 0, this.width, this.height);
+        }
+    }
+    updateKeyPress(key) {
+        this.puck1.updatePos(key, this.barriers)
+        this.puck2.updatePos(key, this.barriers)
+        this.restart(key)
+    }
+    updateBall() {
+        if (this.winstate == null) {
+            var condition = this.ball.updatePos(this.barriers, [this.puck1, this.puck2], 0, this.width)
+            if (condition == 3) {
+                condition = 0
+            }
+            if (condition == 4) {
+                condition = 0
+            }
+            if (condition != 0) {
+                this.winCondition(condition)
+            }
+        }
+    }
+    winCondition(condition) {
+        if (condition == 1) {
+            this.winstate = "#FF0000"
+        } else {
+            this.winstate = "#00FF00"
+        }
+    }
+    restart(key) {
+        if (key == 32 && this.winstate != null) {
+            this.puck1 = new Puck(this.width / 50, this.height / 10, 79, 76, (this.width / 50) * 49, (this.height / 20) * 9, 60)
+            this.puck2 = new Puck(this.width / 50, this.height / 10, 81, 65, 0, (this.height / 20) * 9, 60)
+            this.ball = new Ball(this.height, this.width)
+            this.drawnItems = [this.puck1, this.puck2, this.ball, this.barrier1, this.barrier2]
+            this.winstate = null
+        }
+    }
+    updatePucks() {
+        this.puck1.updatePos([this.ball.x, this.ball.y], this.barriers)
+        this.puck2.updatePos([this.ball.x, this.ball.y], this.barriers)
+    }
+}
+class Ball {
+    constructor(height, width) {
+        this.lastHit = 0;
+        this.size = 50;
+        this.x = (height / 2) - (this.size / 2);
+        this.y = (width / 2) - (this.size / 2);
+        this.xspd = Math.floor((Math.random() * 10) - 5);
+        this.yspd = Math.floor((Math.random() * 10) - 5);
+        while (this.xspd >= -1 && this.xspd <= 1) {
+            this.xspd = Math.floor((Math.random() * 10) - 5);
+        }
+        while (this.yspd >= -1 && this.yspd <= 1) {
+            this.yspd = Math.floor((Math.random() * 10) - 5);
+        }
+    }
+    draw(ctx) {
+        ctx.fillStyle = "#000000";
+        ctx.fillRect(this.x, this.y, this.size, this.size);
+    }
+    updatePos(barriers, pucks, goal1, goal2) {
+        var didCollide = this.checkCollision(barriers, pucks, goal1, goal2);
+        if (didCollide == 3) {
+            this.yspd = this.yspd * -1
+        } else if (didCollide == 2 || didCollide == 6) {
+            if (this.xspd < 0) {
+                this.xspd = this.xspd - 1
+            } else {
+                this.xspd = this.xspd + 1
+            }
+            this.xspd = this.xspd * -1
+            if (didCollide == 2) {
+                this.x = this.x + this.xspd
+                this.y = this.y + this.yspd
+                return 3;
+            } else {
+                this.x = this.x + this.xspd
+                this.y = this.y + this.yspd
+                return 4;
+            }
+        } else if (didCollide == 4) {
+            return 1;
+        } else if (didCollide == 5) {
+            return 2;
+        }
+        this.x = this.x + this.xspd
+        this.y = this.y + this.yspd
+        return 0;
+    }
+    checkCollision(barriers, pucks, goal1, goal2) {
+        if (this.y <= barriers[0].y + barriers[0].height) {
+            return 3;
+        } else if (this.y + this.size >= barriers[1].y) {
+            return 3;
+        } else if (this.lastHit != 1 && (this.x <= pucks[1].x + pucks[1].width && ((this.y >= pucks[1].y && this.y <= pucks[1].y + pucks[1].height) || (this.y + this.size >= pucks[1].y && this.y + this.size <= pucks[1].y + pucks[1].height)))) {
+            this.lastHit = 1
+            return 2;
+        } else if (this.lastHit != 2 && (this.x + this.size >= pucks[0].x && ((this.y >= pucks[0].y && this.y <= pucks[0].y + pucks[0].height) || (this.y + this.size >= pucks[0].y && this.y + this.size <= pucks[0].y + pucks[0].height)))) {
+            this.lastHit = 2
+            return 6;
+        } else if (this.x <= goal1) {
+            return 4;
+        } else if (this.x + this.size >= goal2) {
+            return 5;
+        } else {
+            return 1;
+        }
+    }
+}
+main(1000, 1000)
