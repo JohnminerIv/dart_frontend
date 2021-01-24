@@ -40,13 +40,14 @@
             <!-- Heading Row -->
             <div class="row align-items-center my-5" id="home">
                 <div class="col-lg-7">
-                    <img class="img-fluid rounded mb-4 mb-lg-0" src="http://placehold.it/900x400" alt="">
+                    <canvas id="canvas" class="img-fluid rounded mb-4 mb-lg-0" width="900" height="400"></canvas>
                 </div>
                 <!-- /.col-lg-8 -->
                 <div class="col-lg-5">
                     <h1 class="font-weight-light">Software Engineer</h1>
                     <p>My name is John Miner. I have a passion for machine learning, games, apps and all things computer science. I will have a bachelors degree of Applied CS hopefully by Aug, 2021. I'm looking for jobs to transition into after I finish school. I can do freelance projects if you need a website or app, but if you are connected to a tech company please reach out.</p>
                     <a class="btn btn-primary" href="#contacts">Contact Me</a>
+                    <button class="btn btn-secondary" id='reset'>Reset Game of life</button>
                 </div>
                 <!-- /.col-md-4 -->
             </div>
@@ -57,11 +58,8 @@
                 <div class="col-md-4 mb-5">
                     <div class="card h-100">
                         <div class="card-body">
-                            <h2 class="card-title">Card One</h2>
-                            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rem magni quas ex numquam, maxime minus quam molestias corporis quod, ea minima accusamus.</p>
-                        </div>
-                        <div class="card-footer">
-                            <a href="#" class="btn btn-primary btn-sm">More Info</a>
+                            <h2 class="card-title">Machine Learning</h2>
+                            <p class="card-text">I have expirience with implementing image recognition and natural language processing machine leaning algorithms with Tensorflow and keras.</p>
                         </div>
                     </div>
                 </div>
@@ -69,11 +67,8 @@
                 <div class="col-md-4 mb-5">
                     <div class="card h-100">
                         <div class="card-body">
-                            <h2 class="card-title">Card Two</h2>
-                            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quod tenetur ex natus at dolorem enim! Nesciunt pariatur voluptatem sunt quam eaque, vel, non in id dolore voluptates quos eligendi labore.</p>
-                        </div>
-                        <div class="card-footer">
-                            <a href="#" class="btn btn-primary btn-sm">More Info</a>
+                            <h2 class="card-title">Back End</h2>
+                            <p class="card-text">I have expirience developing RESTful apis with python and node.js.</p>
                         </div>
                     </div>
                 </div>
@@ -81,11 +76,8 @@
                 <div class="col-md-4 mb-5">
                     <div class="card h-100">
                         <div class="card-body">
-                            <h2 class="card-title">Card Three</h2>
-                            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rem magni quas ex numquam, maxime minus quam molestias corporis quod, ea minima accusamus.</p>
-                        </div>
-                        <div class="card-footer">
-                            <a href="#" class="btn btn-primary btn-sm">More Info</a>
+                            <h2 class="card-title">Front End</h2>
+                            <p class="card-text">I have a bit of expirience with JavaScript and HTML.</p>
                         </div>
                     </div>
                 </div>
@@ -225,5 +217,6 @@
             }
             });
         </script>
+        <script src="game.js"></script>
     </body>
 </html>
