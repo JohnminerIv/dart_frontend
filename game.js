@@ -36,7 +36,7 @@ class GameOfLifeBoard {
     for (var c = 0; c < 30; c++) {
       this.board.push([]);
       for (var r = 0; r < 13; r++) {
-        var cell = new Cell(r, c, Math.random() < 0.90);
+        var cell = new Cell(r, c, Math.random() < 0.50);
         this.board[c].push(cell);
       }
     }
